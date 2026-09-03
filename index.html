@@ -10,13 +10,13 @@
   <div class="shell">
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-mark">E</div>
+        <div class="brand-mark"><span>ENAJU</span><b>Talks</b></div>
         <div><strong>ENAJU Talks</strong><span>Radar editorial</span></div>
       </div>
       <p class="sidebar-copy">Políticas judiciárias transformadas em conversas, memória institucional e formação aplicada.</p>
       <div class="side-note">
         <span class="label">Leitura do painel</span>
-        <p>O conselheiro aparece como supervisor da política na base local. Os temas são sugestões editoriais, cruzadas com o catálogo público da ENAJU.</p>
+        <p>O vínculo da política vem da base local. Referências estratégicas, como a governança nacional de IA, são complementadas por fontes oficiais do CNJ.</p>
       </div>
       <nav class="side-links">
         <a href="https://enaju.cnj.jus.br/ead/course/index.php" target="_blank" rel="noopener">Catálogo ENAJU ↗</a>
@@ -72,6 +72,24 @@
       </section>
       <section class="priority-grid" id="priorityGrid"></section>
 
+      <section class="panel governance-panel">
+        <div class="panel-head"><div><p class="eyebrow">Relação oficial atualizada</p><h2>Quem chamar para a trilha de IA</h2></div><span class="section-meta">CNIAJ · CNJ</span></div>
+        <div id="aiGovernanceCard"></div>
+      </section>
+
+      <section class="panel curation-panel">
+        <div class="panel-head"><div><p class="eyebrow">Decisão de pauta</p><h2>Fila dinâmica de gravação</h2><p class="panel-intro">Defina a ordem e registre o motivo. A seleção é salva neste navegador e reaparece quando o painel for aberto novamente.</p></div><span id="storageStatus" class="section-meta"></span></div>
+        <div class="curation-toolbar">
+          <label><span>Ordenar fila por</span><select id="recordingSort"><option value="priority">Prioridade de gravação</option><option value="policy">Política</option><option value="counselor">Conselheiro / supervisor</option></select></label>
+          <div class="toolbar-actions">
+            <button id="exportCurationBtn" class="button button-secondary" type="button">Baixar curadoria</button>
+            <label class="button button-outline" for="importCuration">Importar curadoria<input id="importCuration" type="file" accept="application/json,.json" hidden></label>
+            <button id="clearCurationBtn" class="button button-quiet" type="button">Limpar prioridades</button>
+          </div>
+        </div>
+        <div id="curationTable" class="curation-table"></div>
+      </section>
+
       <section class="layout-grid">
         <section class="panel">
           <div class="panel-head"><div><p class="eyebrow">Concentração temática</p><h2>Políticas por eixo</h2></div><span class="muted">base local</span></div>
@@ -103,11 +121,14 @@
           <p><strong>Dados documentais:</strong> política, resolução, supervisor/conselheiro, coordenador, colegiados e eixo foram lidos da planilha de identificação da pasta “Políticas Judiciárias”.</p>
           <p><strong>Sugestões:</strong> os temas são uma camada editorial de trabalho, não uma atribuição oficial do conselheiro. Foram relacionados a cursos e eventos visíveis no portal da ENAJU.</p>
           <p><strong>Catálogo consultado:</strong> BPC, JuMP/Mineração de Processos, Design de Serviços Digitais, Sisperjud, PrevJud, CODEX, Justiça e Equidade Racial, Saúde Mental e Trabalho, Justiça Restaurativa, acolhimento familiar e cursos de IA.</p>
+          <p><strong>Produto obrigatório de cada Talk:</strong> uma página publicável no site da ENAJU com resumo, pergunta central, convidados, política/resolução, material de apoio, cursos relacionados, fontes citadas, transcrição e recursos de acessibilidade.</p>
+          <p><strong>Persistência da curadoria:</strong> prioridades, motivos e referências CNJ são salvos automaticamente no navegador. Use “Baixar curadoria” para transportar a seleção ou incorporá-la à próxima versão publicada.</p>
         </div>
         <div class="source-links">
           <a href="https://enaju.cnj.jus.br/ead/course/index.php?categoryid=31" target="_blank" rel="noopener">Cursos abertos ENAJU ↗</a>
           <a href="https://enaju.cnj.jus.br/ead/course/index.php?categoryid=41" target="_blank" rel="noopener">Soluções tecnológicas ↗</a>
           <a href="https://enaju.cnj.jus.br/ead/course/index.php?categoryid=52" target="_blank" rel="noopener">Ciência e Dados de IA ↗</a>
+          <a href="https://www.cnj.jus.br/sistemas/plataforma-sinapses/comite-nacional-de-inteligencia-artificial-do-judiciario-cniaj/" target="_blank" rel="noopener">Comitê Nacional de IA ↗</a>
           <a href="https://www.cnj.jus.br/cnj-lanca-curso-gratuito-sobre-justica-e-equidade-racial/" target="_blank" rel="noopener">Notícia CNJ: Equidade Racial ↗</a>
         </div>
       </section>

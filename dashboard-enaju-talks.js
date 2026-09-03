@@ -11,6 +11,7 @@ const courseAnchors = {
   restaurativa: {title:"Essência da Justiça Restaurativa", url:"https://enaju.cnj.jus.br/ead/course/index.php?categoryid=31", note:"Princípios, métodos e práticas restaurativas"},
   infancia: {title:"Serviço de Acolhimento em Família Acolhedora", url:"https://enaju.cnj.jus.br/ead/course/index.php?categoryid=31", note:"Infâncias, adolescências e rede de proteção"},
   ia: {title:"Ciência e Dados de IA — catálogo ENAJU", url:"https://enaju.cnj.jus.br/ead/course/index.php?categoryid=52", note:"Soluções de IA e capacitação para utilização"},
+  cniaj: {title:"Comitê Nacional de Inteligência Artificial do Judiciário", url:"https://www.cnj.jus.br/sistemas/plataforma-sinapses/comite-nacional-de-inteligencia-artificial-do-judiciario-cniaj/", note:"Governança nacional de IA no Judiciário"},
   eventos: {title:"Eventos realizados pela ENAJU", url:"https://enaju.cnj.jus.br/ead/course/index.php?categoryid=48", note:"Conversas, lançamentos e programas formativos"}
 };
 const topicProfiles = [
@@ -61,7 +62,7 @@ const topicProfiles = [
 const priorityIdeas = [
   {title:"BPC além do diagnóstico",tag:"Piloto recomendado",policy:"Política de Acessibilidade e Inclusão de Pessoas com Deficiência nos Órgãos do Poder Judiciário",people:"Noemia Aparecida Garcia Porto · Gabriela Lenz de Lacerda",copy:"A própria ENAJU já tem a Trilha 2 de Avaliação Biopsicossocial do BPC. O Talks pode fazer a ponte entre capacitação, instrumento, CIF e decisão judicial.",anchors:["bpc"]},
   {title:"Gestão processual com evidências",tag:"Alta aderência",policy:"Política Nacional de Atenção Prioritária ao Primeiro Grau de Jurisdição",people:"Noemia Aparecida Garcia Porto · Thiago Henrique Teles Lopes",copy:"Conecta diretamente o curso JuMP/Mineração de Processos ao desafio de falar sobre gargalos, celeridade, efetividade e qualidade no primeiro grau.",anchors:["jump","design"]},
-  {title:"IA responsável no Judiciário",tag:"Pauta estratégica",policy:"Política de Gestão da Inovação · ENTIC-JUD · Justiça 4.0",people:"Andrea Cunha Esmeraldo · Carlos Vinícius Alves Ribeiro",copy:"A trilha pode discutir governança, dados, supervisão humana, segurança e competências para uso real de IA, articulando inovação e formação.",anchors:["ia","codex","design"]}
+  {title:"IA responsável no Judiciário",tag:"Pauta estratégica · CNIAJ",policy:"Governança nacional de IA — Resolução CNJ nº 615/2025",people:"Rodrigo Badaró Almeida de Castro · presidente do CNIAJ",copy:"A trilha pode discutir governança, dados, supervisão humana, segurança e competências para uso real de IA, articulando inovação, formação e a agenda do Comitê Nacional de Inteligência Artificial do Judiciário.",anchors:["cniaj","ia","codex","design"]}
 ];
 const clean = value => {
   const text = String(value ?? "");
@@ -69,19 +70,104 @@ const clean = value => {
 };
 const normalize = value => String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
 const escapeHtml = value => clean(value).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c]));
+const escapeAttr = value => String(value ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c]));
 const profileFor = policy => topicProfiles.find(profile => normalize(policy.p).includes(normalize(profile.match))) || {
   fit:"Base",track:"Pauta a desenvolver",topics:["Política em linguagem clara","Implementação e resultados","Competências para a prática"],anchors:["eventos"],angle:"Como traduzir esta política em uma conversa útil para quem trabalha no sistema de Justiça?"
 };
+const aiGovernance = {
+  name:"Rodrigo Badaró Almeida de Castro",
+  role:"Conselheiro do CNJ e presidente do Comitê Nacional de Inteligência Artificial do Judiciário (CNIAJ)",
+  source:"Composição atual do CNIAJ, Portaria CNJ nº 270/2025 e alterações posteriores",
+  url:"https://www.cnj.jus.br/sistemas/plataforma-sinapses/comite-nacional-de-inteligencia-artificial-do-judiciario-cniaj/"
+};
+const editorialDefaults = {
+  reference:"Cursos e referências públicas da ENAJU relacionados ao tema, além da resolução e dos documentos oficiais da política.",
+  product:"Página publicável do episódio no site da ENAJU com título, pergunta central, convidados, política/resolução, resumo, material de apoio, cursos relacionados, fontes citadas, transcrição e recursos de acessibilidade.",
+  register:"Registrar no dossiê do episódio: pauta, participantes, conceitos apresentados, dados, normas, links citados, cortes, revisão técnica e autorização de publicação.",
+  status:"A validar pela curadoria editorial, área técnica, comunicação e acessibilidade antes da publicação."
+};
+const editorialOverrides = [
+  {match:"Acessibilidade e Inclusão", reference:"Artigo submetido e analisado pela ENAJU: “Compreendendo a avaliação biopsicossocial para acesso ao Benefício de Prestação Continuada da Assistência Social (BPC)”. O artigo será a referência de conteúdo a ser publicada no site da ENAJU, após validação final.", product:"Matéria/página do episódio-piloto “BPC além do diagnóstico”, consolidando o artigo, a pergunta central, convidados, CIF, instrumentos de avaliação, referências normativas, roteiro, transcrição e materiais acessíveis.", register:"Registrar as informações citadas no artigo e na conversa: fundamentos legais, comparação Executivo–Judiciário, avaliação biopsicossocial, CIF, barreiras, facilitadores, instrumentos, fontes e validações."},
+  {match:"Gestão da Inovação", reference:"Cursos ENAJU de Design de Serviços Digitais e catálogo de Ciência e Dados de IA, combinados com a Política de Gestão da Inovação e seus colegiados oficiais.", product:"Página de episódio com caso de inovação, problema público, método, evidências, participantes, fontes, materiais formativos e próximos passos de implementação."},
+  {match:"Tecnologia da Informação", reference:"Comitê Nacional de Inteligência Artificial do Judiciário (CNIAJ), Resolução CNJ nº 615/2025, ENTIC-JUD e cursos ENAJU de IA, dados e transformação digital.", product:"Página de episódio com governança, riscos, segurança, supervisão humana, dados, sistemas citados, fontes oficiais, glossário, transcrição e orientações práticas.", register:"Registrar soluções, conceitos, riscos, bases normativas, sistemas, links citados, decisões editoriais e responsáveis pela validação técnica."},
+  {match:"Justiça 4.0", reference:"Programa Justiça 4.0, cursos ENAJU de mineração de processos, dados, CODEX e IA, e referência oficial do CNIAJ quando o episódio abordar governança tecnológica.", product:"Página de episódio com contexto do programa, demonstração/caso, efeitos sobre o trabalho, fontes, cursos, dados, transcrição e recursos de acessibilidade."}
+];
+const editorialFor = (item, profile) => {
+  const override = editorialOverrides.find(value => normalize(item.p).includes(normalize(value.match))) || {};
+  const result = {...editorialDefaults, ...override};
+  const isAi = ["Gestão da Inovação","Tecnologia da Informação","Justiça 4.0"].some(value => normalize(item.p).includes(normalize(value)));
+  result.relatedPeople = isAi ? [aiGovernance] : [];
+  return result;
+};
+const policyKey = item => normalize(item.r + "|" + item.p);
+const CURATION_KEY = "enaju-talks-curation-v1";
+const defaultCuration = {};
+[
+  ["Acessibilidade e Inclusão",1,"Piloto já estruturado; o artigo submetido e analisado pela ENAJU fornece a base de conteúdo e o produto publicável."],
+  ["Atenção Prioritária ao Primeiro Grau",2,"Conexão direta com gerenciamento processual, JuMP/Mineração de Processos e o curso de eficiência, celeridade e efetividade."],
+  ["Gestão da Inovação",3,"Pauta estratégica para conectar inovação, desenho de serviços, formação e governança responsável de IA."]
+].forEach(([needle, priority, reason]) => {
+  const item = policyData.find(value => normalize(value.p).includes(normalize(needle)));
+  if (item) defaultCuration[policyKey(item)] = {priority, reason};
+});
+const aiPolicy = policyData.find(value => normalize(value.p).includes(normalize("Gestão da Inovação")));
+if (aiPolicy) defaultCuration[policyKey(aiPolicy)] = {...defaultCuration[policyKey(aiPolicy)], cnjActor:aiGovernance.name, cnjSource:aiGovernance.url};
+const curationMeta = {updatedAt:null, persisted:false};
+const sanitizeCuration = payload => {
+  const raw = payload?.items || payload || {};
+  const result = {};
+  Object.entries(raw).forEach(([key,value]) => {
+    const priority = Math.max(0, Math.min(10, Number(value?.priority) || 0));
+    const reason = String(value?.reason ?? "").trim();
+    const cnjActor = String(value?.cnjActor ?? "").trim();
+    const cnjSource = String(value?.cnjSource ?? "").trim();
+    if (priority || reason || cnjActor || cnjSource) result[key] = {priority, reason, cnjActor, cnjSource};
+  });
+  return result;
+};
+function loadCuration(){
+  const base = JSON.parse(JSON.stringify(defaultCuration));
+  try {
+    const stored = JSON.parse(localStorage.getItem(CURATION_KEY) || "null");
+    if (stored) { Object.assign(base, sanitizeCuration(stored)); curationMeta.updatedAt = stored.updatedAt || null; curationMeta.persisted = true; }
+  } catch (error) { curationMeta.persisted = false; }
+  return base;
+}
 const anchorsHtml = ids => ids.map(id => {
   const course = courseAnchors[id]; return course ? '<a class="course-link" href="' + course.url + '" target="_blank" rel="noopener"><span>' + escapeHtml(course.title) + '</span><span>↗</span></a>' : "";
 }).join("");
-const state = {search:"", counselor:"all", axis:"all", fit:"all", selected:null};
+const state = {search:"", counselor:"all", axis:"all", fit:"all", selected:null, recordingSort:"priority", curation:loadCuration()};
 const $ = id => document.getElementById(id);
 function setupFilters(){
   const counselors = [...new Set(policyData.map(item => clean(item.s)).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
   const axes = [...new Set(policyData.map(item => clean(item.e)).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
   $("counselorFilter").innerHTML = '<option value="all">Todos</option>' + counselors.map(v=>'<option value="' + escapeHtml(v) + '">' + escapeHtml(v) + '</option>').join("");
   $("axisFilter").innerHTML = '<option value="all">Todos</option>' + axes.map(v=>'<option value="' + escapeHtml(v) + '">' + escapeHtml(v) + '</option>').join("");
+}
+const priorityOptions = selected => '<option value="0"' + (Number(selected) === 0 ? ' selected' : '') + '>Sem prioridade</option>' + Array.from({length:10},(_,index) => { const value=index+1; return '<option value="' + value + '"' + (Number(selected) === value ? ' selected' : '') + '>Prioridade ' + value + '</option>'; }).join("");
+const curationFor = item => state.curation[policyKey(item)] || {priority:0, reason:""};
+function updateStorageStatus(){
+  const status = $("storageStatus");
+  if (!status) return;
+  status.textContent = curationMeta.updatedAt ? "Salvo neste navegador em " + new Date(curationMeta.updatedAt).toLocaleString("pt-BR") : "Padrão editorial; alterações salvas automaticamente";
+}
+function persistCuration(){
+  curationMeta.updatedAt = new Date().toISOString();
+  try {
+    localStorage.setItem(CURATION_KEY, JSON.stringify({schemaVersion:1, updatedAt:curationMeta.updatedAt, items:state.curation}));
+    curationMeta.persisted = true;
+  } catch (error) { curationMeta.persisted = false; }
+  updateStorageStatus();
+}
+function updateCuration(index, patch, rerender=true){
+  const item = policyData[index];
+  if (!item) return;
+  const current = curationFor(item);
+  const next = {...current, ...patch, priority:Math.max(0, Math.min(10, Number(patch.priority ?? current.priority) || 0))};
+  if (!next.priority && !String(next.reason || "").trim()) delete state.curation[policyKey(item)];
+  else state.curation[policyKey(item)] = {priority:next.priority, reason:String(next.reason || "").trim(), cnjActor:String(next.cnjActor || "").trim(), cnjSource:String(next.cnjSource || "").trim()};
+  persistCuration();
+  if (rerender) render();
 }
 function filtered(){
   const q = normalize(state.search);
@@ -106,7 +192,21 @@ function renderMetrics(items){
   ].map(([name,value,color])=>'<article class="metric"><div class="accent" style="background:var(--' + color + ')"></div><div class="value">' + value + '</div><div class="name">' + name + '</div></article>').join("");
 }
 function renderPriorities(){
-  $("priorityGrid").innerHTML = priorityIdeas.map(idea => '<article class="priority"><p class="eyebrow">' + idea.tag + '</p><h3>' + idea.title + '</h3><p>' + idea.copy + '</p><div class="people">' + idea.people + '</div><div class="tag-row" style="margin-top:13px">' + idea.anchors.map(id=>'<span class="tag">' + escapeHtml(courseAnchors[id].title) + '</span>').join("") + '</div></article>').join("");
+  $("priorityGrid").innerHTML = priorityIdeas.map(idea => '<article class="priority"><p class="eyebrow">' + escapeHtml(idea.tag) + '</p><h3>' + escapeHtml(idea.title) + '</h3><p>' + escapeHtml(idea.copy) + '</p><div class="people">' + escapeHtml(idea.people) + '</div><div class="tag-row" style="margin-top:13px">' + idea.anchors.map(id=>'<span class="tag">' + escapeHtml(courseAnchors[id].title) + '</span>').join("") + '</div></article>').join("");
+}
+function renderAIGovernance(){
+  $("aiGovernanceCard").innerHTML = '<div class="governance-card"><div class="governance-mark">IA</div><div class="governance-copy"><h3>' + escapeHtml(aiGovernance.name) + '</h3><p>' + escapeHtml(aiGovernance.role) + '</p><span>' + escapeHtml(aiGovernance.source) + '</span></div><a class="governance-link" href="' + aiGovernance.url + '" target="_blank" rel="noopener">Ver composição oficial ↗</a></div><p class="governance-note">Ele não aparece como supervisor nos cards de políticas porque não consta na base documental local. Esta relação foi adicionada como referência oficial de governança de IA, sem alterar a atribuição formal das políticas.</p>';
+}
+function renderCuration(){
+  const rows = policyData.map((item,index)=>({item,index,curation:curationFor(item),profile:profileFor(item)})).filter(row=>row.curation.priority > 0);
+  rows.sort((a,b)=>{
+    if (state.recordingSort === "policy") return a.item.p.localeCompare(b.item.p,"pt-BR");
+    if (state.recordingSort === "counselor") return clean(a.item.s).localeCompare(clean(b.item.s),"pt-BR") || a.curation.priority-b.curation.priority;
+    return a.curation.priority-b.curation.priority || a.item.p.localeCompare(b.item.p,"pt-BR");
+  });
+  if (!rows.length) { $("curationTable").innerHTML = '<div class="curation-empty">Nenhuma gravação priorizada. Use o campo “Prioridade” em qualquer card para montar a fila.</div>'; updateStorageStatus(); return; }
+  $("curationTable").innerHTML = '<div class="curation-head"><span>Ordem</span><span>Talk / política vinculada</span><span>Motivo da prioridade</span><span>Movimentação no CNJ</span><span>Ação</span></div>' + rows.map(row=>'<div class="curation-row"><div class="curation-priority"><select data-priority-index="' + row.index + '" aria-label="Ordem de gravação para ' + escapeAttr(row.item.p) + '">' + priorityOptions(row.curation.priority) + '</select></div><div class="curation-main"><strong>' + escapeHtml(row.profile.track) + '</strong><span>' + escapeHtml(row.item.p) + '</span><small>' + escapeHtml(clean(row.item.s)) + ' · Resolução ' + escapeHtml(row.item.r) + '</small></div><label class="reason-field"><span>Motivo</span><input type="text" value="' + escapeAttr(row.curation.reason) + '" data-reason-index="' + row.index + '" placeholder="Por que gravar agora?"></label><label class="cnj-driver"><span>Nome / unidade do CNJ</span><input type="text" value="' + escapeAttr(row.curation.cnjActor || "") + '" data-cnj-actor-index="' + row.index + '" placeholder="Quem movimenta o tema?"><input type="url" value="' + escapeAttr(row.curation.cnjSource || "") + '" data-cnj-source-index="' + row.index + '" placeholder="URL da matéria/fonte CNJ"></label><button class="card-action curation-open" type="button" data-open-index="' + row.index + '">Abrir ficha</button></div>').join("");
+  updateStorageStatus();
 }
 function renderAxisChart(items){
   const counts = {};
@@ -124,32 +224,52 @@ function renderCounselors(items){
 function renderCards(items){
   $("resultCount").textContent = items.length + " política" + (items.length === 1 ? "" : "s");
   $("policyGrid").innerHTML = items.map((item,index) => {
-    const profile=profileFor(item); const fitClass=profile.fit.toLowerCase().replace("é","e");
-    return '<article class="policy-card"><div class="card-top"><span class="resolution">Resolução ' + escapeHtml(item.r) + '</span><span class="fit fit-' + fitClass + '">' + profile.fit + '</span></div><h3>' + escapeHtml(item.p) + '</h3><div class="tag-row">' + profile.topics.map(t=>'<span class="tag">' + escapeHtml(t) + '</span>').join("") + '</div><div class="person-block"><div class="person-line"><strong>Conselheiro</strong>' + escapeHtml(item.s) + '</div><div class="person-line"><strong>Coordenador</strong>' + escapeHtml(item.c) + '</div></div><div class="committee"><strong>Colegiado:</strong> ' + escapeHtml(item.g) + '</div><button class="card-action" type="button" data-index="' + policyData.indexOf(item) + '">Abrir ficha editorial</button></article>';
+    const profile=profileFor(item); const fitClass=profile.fit.toLowerCase().replace("é","e"); const originalIndex=policyData.indexOf(item); const curation=curationFor(item); const editorial=editorialFor(item,profile);
+    const related = editorial.relatedPeople.length ? '<div class="ia-relation"><strong>Governança IA:</strong> ' + escapeHtml(editorial.relatedPeople[0].name) + '</div>' : '';
+    return '<article class="policy-card"><div class="card-top"><span class="resolution">Resolução ' + escapeHtml(item.r) + '</span><span class="fit fit-' + fitClass + '">' + escapeHtml(profile.fit) + '</span></div><h3>' + escapeHtml(item.p) + '</h3><div class="tag-row">' + profile.topics.map(t=>'<span class="tag">' + escapeHtml(t) + '</span>').join("") + '</div><div class="person-block"><div class="person-line"><strong>Conselheiro</strong>' + escapeHtml(item.s) + '</div><div class="person-line"><strong>Coordenador</strong>' + escapeHtml(item.c) + '</div></div><div class="committee"><strong>Colegiado:</strong> ' + escapeHtml(item.g) + '</div>' + related + '<div class="card-controls"><label><span>Prioridade de gravação</span><select data-priority-index="' + originalIndex + '" aria-label="Prioridade de gravação para ' + escapeAttr(item.p) + '">' + priorityOptions(curation.priority) + '</select></label><button class="card-action" type="button" data-index="' + originalIndex + '">Abrir ficha editorial</button></div></article>';
   }).join("") || '<div class="empty">Nenhuma política encontrada. Ajuste os filtros ou a busca.</div>';
-  document.querySelectorAll(".card-action").forEach(button=>button.addEventListener("click",()=>openDetail(Number(button.dataset.index))));
+  document.querySelectorAll(".policy-card .card-action").forEach(button=>button.addEventListener("click",()=>openDetail(Number(button.dataset.index))));
 }
 function openDetail(index){
-  const item=policyData[index]; const profile=profileFor(item); state.selected=index;
+  const item=policyData[index]; const profile=profileFor(item); const editorial=editorialFor(item,profile); const curation=curationFor(item); state.selected=index;
   $("detailPanel").hidden=false; $("detailTitle").textContent=item.p;
-  $("detailContent").innerHTML='<div><p class="sub">Leitura documental</p><p><strong>Conselheiro / supervisor:</strong> ' + escapeHtml(item.s) + '<br><strong>Coordenador:</strong> ' + escapeHtml(item.c) + '<br><strong>Resolução:</strong> ' + escapeHtml(item.r) + '</p><p><strong>Eixo:</strong> ' + escapeHtml(item.e) + '<br><strong>Macrodesafio:</strong> ' + escapeHtml(item.m) + '</p><p><strong>Colegiados:</strong> ' + escapeHtml(item.g) + '</p><p class="sub">Pergunta editorial sugerida</p><p>' + escapeHtml(profile.angle) + '</p><p class="sub">Temas de conversa</p><div class="tag-row">' + profile.topics.map(t=>'<span class="tag">' + escapeHtml(t) + '</span>').join("") + '</div></div><aside class="detail-side"><p class="sub">Cursos e referências ENAJU</p><div class="course-list">' + anchorsHtml(profile.anchors) + '</div><p class="sub" style="margin-top:18px">Trilha editorial</p><p>' + escapeHtml(profile.track) + ' · aderência ' + profile.fit.toLowerCase() + '</p></aside>';
+  const relatedHtml=editorial.relatedPeople.length ? '<p class="sub">Referência oficial de governança</p><p><strong>' + escapeHtml(editorial.relatedPeople[0].name) + '</strong> · ' + escapeHtml(editorial.relatedPeople[0].role) + '<br><a href="' + editorial.relatedPeople[0].url + '" target="_blank" rel="noopener">Fonte oficial no CNJ ↗</a></p>' : '';
+  $("detailContent").innerHTML='<div><p class="sub">Leitura documental</p><p><strong>Conselheiro / supervisor:</strong> ' + escapeHtml(item.s) + '<br><strong>Coordenador:</strong> ' + escapeHtml(item.c) + '<br><strong>Resolução:</strong> ' + escapeHtml(item.r) + '</p><p><strong>Eixo:</strong> ' + escapeHtml(item.e) + '<br><strong>Macrodesafio:</strong> ' + escapeHtml(item.m) + '</p><p><strong>Colegiados:</strong> ' + escapeHtml(item.g) + '</p>' + relatedHtml + '<p class="sub">Pergunta editorial sugerida</p><p>' + escapeHtml(profile.angle) + '</p><p class="sub">Temas de conversa</p><div class="tag-row">' + profile.topics.map(t=>'<span class="tag">' + escapeHtml(t) + '</span>').join("") + '</div></div><aside class="detail-side"><p class="sub">Material de apoio / referência</p><p>' + escapeHtml(editorial.reference) + '</p><p class="sub">Produto publicável do Talk</p><p>' + escapeHtml(editorial.product) + '</p><p class="sub">Registro de conteúdo</p><p>' + escapeHtml(editorial.register) + '</p><p class="sub">Trilha editorial</p><p>' + escapeHtml(profile.track) + ' · aderência ' + profile.fit.toLowerCase() + '</p><div class="detail-curation"><label><span>Ordem de gravação</span><select data-priority-index="' + index + '" aria-label="Ordem de gravação para ' + escapeAttr(item.p) + '">' + priorityOptions(curation.priority) + '</select></label><label><span>Motivo da prioridade</span><textarea data-reason-index="' + index + '" rows="4" placeholder="Por que gravar este Talk agora?">' + escapeAttr(curation.reason) + '</textarea></label><small>' + escapeHtml(editorial.status) + '</small></div><label class="cnj-driver"><span>Nome / unidade do CNJ que mais movimenta o tema</span><input type="text" value="' + escapeAttr(curation.cnjActor || "") + '" data-cnj-actor-index="' + index + '" placeholder="Nome da pessoa ou unidade"><span>Matéria ou fonte do CNJ</span><input type="url" value="' + escapeAttr(curation.cnjSource || "") + '" data-cnj-source-index="' + index + '" placeholder="https://www.cnj.jus.br/..."/><small>Campo editorial, preenchido a partir da leitura das matérias do portal do CNJ.</small></label><p class="sub" style="margin-top:18px">Cursos e referências ENAJU</p><div class="course-list">' + anchorsHtml(profile.anchors) + '</div></aside>';
   $("detailPanel").scrollIntoView({behavior:"smooth",block:"start"});
 }
 function render(){
-  const items=filtered(); renderMetrics(items); renderAxisChart(items); renderCounselors(items); renderCards(items);
+  const items=filtered(); renderMetrics(items); renderAxisChart(items); renderCounselors(items); renderCards(items); renderCuration();
 }
 function exportCsv(){
-  const items=filtered(); const headers=["Política","Resolução","Conselheiro/supervisor","Coordenador","Eixo","Aderência","Temas ENAJU Talks"];
-  const lines=[headers,...items.map(item=>{const p=profileFor(item);return [item.p,item.r,item.s,item.c,item.e,p.fit,p.topics.join(" | ")]})].map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";"));
+  const items=filtered(); const headers=["Política","Resolução","Conselheiro/supervisor","Coordenador","Eixo","Aderência","Temas ENAJU Talks","Prioridade de gravação","Motivo da prioridade","Nome/unidade CNJ","Matéria/fonte CNJ"];
+  const lines=[headers,...items.map(item=>{const p=profileFor(item);const c=curationFor(item);return [item.p,item.r,item.s,item.c,item.e,p.fit,p.topics.join(" | "),c.priority || "",c.reason || "",c.cnjActor || "",c.cnjSource || ""]})].map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";"));
   const blob=new Blob(["\ufeff"+lines.join("\n")],{type:"text/csv;charset=utf-8"});
   const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download="radar-enaju-talks.csv"; a.click(); URL.revokeObjectURL(url);
   showToast("CSV exportado com o recorte atual.");
 }
+function exportCuration(){
+  const payload={schemaVersion:1,updatedAt:curationMeta.updatedAt || new Date().toISOString(),items:state.curation};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json;charset=utf-8"});
+  const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download="curadoria-enaju-talks.json"; a.click(); URL.revokeObjectURL(url);
+  showToast("Curadoria baixada para registro ou compartilhamento.");
+}
+function importCuration(file){
+  const reader=new FileReader();
+  reader.onload=()=>{try{const payload=JSON.parse(reader.result); state.curation=sanitizeCuration(payload); persistCuration(); render(); showToast("Curadoria importada e salva neste navegador.");}catch(error){showToast("Não foi possível ler este arquivo de curadoria.");}};
+  reader.readAsText(file,"utf-8");
+}
 function showToast(message){const toast=$("toast"); toast.textContent=message; toast.classList.add("is-visible"); setTimeout(()=>toast.classList.remove("is-visible"),2300)}
-setupFilters(); renderPriorities(); render();
+setupFilters(); renderPriorities(); renderAIGovernance(); render();
 $("searchInput").addEventListener("input",e=>{state.search=e.target.value;render()});
 $("counselorFilter").addEventListener("change",e=>{state.counselor=e.target.value;render()});
 $("axisFilter").addEventListener("change",e=>{state.axis=e.target.value;render()});
 $("fitFilter").addEventListener("change",e=>{state.fit=e.target.value;render()});
+$("recordingSort").addEventListener("change",e=>{state.recordingSort=e.target.value;renderCuration()});
+$("exportCurationBtn").addEventListener("click",exportCuration);
+$("importCuration").addEventListener("change",e=>{if(e.target.files[0]) importCuration(e.target.files[0]); e.target.value=""});
+$("clearCurationBtn").addEventListener("click",()=>{if(window.confirm("Limpar todas as prioridades e motivos salvos neste navegador?")){state.curation={}; persistCuration(); render(); showToast("Fila de gravação limpa.");}});
 $("exportBtn").addEventListener("click",exportCsv);
 $("closeDetail").addEventListener("click",()=>{$("detailPanel").hidden=true});
+document.addEventListener("change",event=>{if(event.target.matches("[data-priority-index]")) updateCuration(Number(event.target.dataset.priorityIndex),{priority:event.target.value}); if(event.target.matches("[data-reason-index]")) updateCuration(Number(event.target.dataset.reasonIndex),{reason:event.target.value},false); if(event.target.matches("[data-cnj-actor-index]")) updateCuration(Number(event.target.dataset.cnjActorIndex),{cnjActor:event.target.value},false); if(event.target.matches("[data-cnj-source-index]")) updateCuration(Number(event.target.dataset.cnjSourceIndex),{cnjSource:event.target.value},false);});
+document.addEventListener("input",event=>{if(event.target.matches("[data-reason-index]")) updateCuration(Number(event.target.dataset.reasonIndex),{reason:event.target.value},false); if(event.target.matches("[data-cnj-actor-index]")) updateCuration(Number(event.target.dataset.cnjActorIndex),{cnjActor:event.target.value},false); if(event.target.matches("[data-cnj-source-index]")) updateCuration(Number(event.target.dataset.cnjSourceIndex),{cnjSource:event.target.value},false);});
+document.addEventListener("click",event=>{const button=event.target.closest("[data-open-index]"); if(button) openDetail(Number(button.dataset.openIndex));});

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ENAJU Talks — Radar editorial</title>
+  <link rel="stylesheet" href="dashboard-enaju-talks.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">E</div>
+        <div><strong>ENAJU Talks</strong><span>Radar editorial</span></div>
+      </div>
+      <p class="sidebar-copy">Políticas judiciárias transformadas em conversas, memória institucional e formação aplicada.</p>
+      <div class="side-note">
+        <span class="label">Leitura do painel</span>
+        <p>O conselheiro aparece como supervisor da política na base local. Os temas são sugestões editoriais, cruzadas com o catálogo público da ENAJU.</p>
+      </div>
+      <nav class="side-links">
+        <a href="https://enaju.cnj.jus.br/ead/course/index.php" target="_blank" rel="noopener">Catálogo ENAJU ↗</a>
+        <a href="https://www.cnj.jus.br/escola-nacional-do-judiciario-enaju/cursos-abertos/" target="_blank" rel="noopener">Cursos abertos CNJ ↗</a>
+        <a href="./Identificação(2a069951-6b3f-4410-82f1-9094a49ca739).xlsx">Base de políticas</a>
+        <a href="./Colegiados(NuWMfk).xlsx">Base de colegiados</a>
+      </nav>
+      <div class="sidebar-footer">Data-base local: 03/09/2026<br>Catálogo ENAJU consultado: 03/09/2026</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Coordenação de Desenvolvimento Educacional, Pesquisa e Inovação</p>
+          <h1>Conselheiros, políticas e oportunidades de ENAJU Talks</h1>
+          <p class="lede">Um mapa de pauta para priorizar conversas com quem formula, supervisiona e implementa políticas no Judiciário.</p>
+        </div>
+        <button id="exportBtn" class="button button-secondary" type="button">Exportar recorte CSV</button>
+      </header>
+
+      <section class="filters" aria-label="Filtros">
+        <label class="search">
+          <span>Buscar</span>
+          <input id="searchInput" type="search" placeholder="política, conselheiro, curso ou tema">
+        </label>
+        <label>
+          <span>Conselheiro / supervisor</span>
+          <select id="counselorFilter"></select>
+        </label>
+        <label>
+          <span>Eixo</span>
+          <select id="axisFilter"></select>
+        </label>
+        <label>
+          <span>Aderência editorial</span>
+          <select id="fitFilter">
+            <option value="all">Todas</option>
+            <option value="Alta">Alta</option>
+            <option value="Média">Média</option>
+            <option value="Base">Base</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="metrics" id="metrics"></section>
+
+      <section class="section-head">
+        <div>
+          <p class="eyebrow">Prioridades sugeridas</p>
+          <h2>Três conversas para começar</h2>
+        </div>
+        <span class="section-meta">Curadoria editorial ENAJU Talks</span>
+      </section>
+      <section class="priority-grid" id="priorityGrid"></section>
+
+      <section class="layout-grid">
+        <section class="panel">
+          <div class="panel-head"><div><p class="eyebrow">Concentração temática</p><h2>Políticas por eixo</h2></div><span class="muted">base local</span></div>
+          <div id="axisChart" class="bar-chart"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><div><p class="eyebrow">Pontos de entrada</p><h2>Conselheiros com maior recorrência</h2></div><span class="muted">supervisão</span></div>
+          <div id="counselorList" class="rank-list"></div>
+        </section>
+      </section>
+
+      <section class="section-head results-head">
+        <div>
+          <p class="eyebrow">Mapa de pautas</p>
+          <h2>Políticas vinculadas a conselheiros</h2>
+        </div>
+        <span id="resultCount" class="section-meta"></span>
+      </section>
+      <section id="policyGrid" class="policy-grid"></section>
+
+      <section class="panel detail-panel" id="detailPanel" hidden>
+        <div class="panel-head"><div><p class="eyebrow">Ficha editorial</p><h2 id="detailTitle"></h2></div><button id="closeDetail" class="icon-button" type="button" aria-label="Fechar">×</button></div>
+        <div id="detailContent"></div>
+      </section>
+
+      <section class="panel source-panel">
+        <div class="panel-head"><div><p class="eyebrow">Método e fontes</p><h2>Como interpretar</h2></div></div>
+        <div class="source-grid">
+          <p><strong>Dados documentais:</strong> política, resolução, supervisor/conselheiro, coordenador, colegiados e eixo foram lidos da planilha de identificação da pasta “Políticas Judiciárias”.</p>
+          <p><strong>Sugestões:</strong> os temas são uma camada editorial de trabalho, não uma atribuição oficial do conselheiro. Foram relacionados a cursos e eventos visíveis no portal da ENAJU.</p>
+          <p><strong>Catálogo consultado:</strong> BPC, JuMP/Mineração de Processos, Design de Serviços Digitais, Sisperjud, PrevJud, CODEX, Justiça e Equidade Racial, Saúde Mental e Trabalho, Justiça Restaurativa, acolhimento familiar e cursos de IA.</p>
+        </div>
+        <div class="source-links">
+          <a href="https://enaju.cnj.jus.br/ead/course/index.php?categoryid=31" target="_blank" rel="noopener">Cursos abertos ENAJU ↗</a>
+          <a href="https://enaju.cnj.jus.br/ead/course/index.php?categoryid=41" target="_blank" rel="noopener">Soluções tecnológicas ↗</a>
+          <a href="https://enaju.cnj.jus.br/ead/course/index.php?categoryid=52" target="_blank" rel="noopener">Ciência e Dados de IA ↗</a>
+          <a href="https://www.cnj.jus.br/cnj-lanca-curso-gratuito-sobre-justica-e-equidade-racial/" target="_blank" rel="noopener">Notícia CNJ: Equidade Racial ↗</a>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="dashboard-enaju-talks.js"></script>
+</body>
+</html>
